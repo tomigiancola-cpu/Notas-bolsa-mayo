@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rendimientos de Mayo 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0e17;
+    --surface: #111827;
+    --s2: #141d2b;
+    --border: #1e2d40;
+    --text: #e8edf5;
+    --muted: #6b7a90;
+    --rv: #22d47a;
+    --rv-dim: rgba(34,212,122,0.15);
+    --rfd: #f0b429;
+    --rfd-dim: rgba(240,180,41,0.12);
+    --rfp: #4e8ef7;
+    --rfp-dim: rgba(78,142,247,0.12);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 20px;
+  }
+
+  .wrapper { width: 100%; max-width: 860px; }
+
+  .header {
+    margin-bottom: 24px;
+    border-left: 3px solid var(--rv);
+    padding-left: 16px;
+  }
+
+  .header .label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--rv);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--text);
+  }
+  .header h1 span { font-style: italic; color: var(--rv); }
+
+  .legend {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .leg-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  .leg-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+  }
+
+  .leg-dot.rv  { background: var(--rv); }
+  .leg-dot.rfd { background: var(--rfd); }
+  .leg-dot.rfp { background: var(--rfp); }
+
+  .columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .col {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .col-header {
+    padding: 14px 16px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .col.rv .col-header   { color: var(--rv);  background: var(--rv-dim); }
+  .col.rfd .col-header  { color: var(--rfd); background: var(--rfd-dim); }
+  .col.rfp .col-header  { color: var(--rfp); background: var(--rfp-dim); }
+
+  .col-header .col-sub {
+    font-weight: 400;
+    letter-spacing: 0;
+    font-size: 10px;
+    opacity: 0.7;
+    display: block;
+    margin-top: 3px;
+    text-transform: none;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .item {
+    display: flex;
+    align-items: center;
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--border);
+    gap: 10px;
+  }
+  .item:last-child { border-bottom: none; }
+
+  .item-rank {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    width: 16px;
+    flex-shrink: 0;
+    text-align: right;
+  }
+
+  .item-info { flex: 1; min-width: 0; }
+
+  .item-name {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .item-type {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .item-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .col.rv  .item-val { color: var(--rv); }
+  .col.rfd .item-val { color: var(--rfd); }
+  .col.rfp .item-val { color: var(--rfp); }
+
+  .bar-mini {
+    height: 3px;
+    border-radius: 2px;
+    margin-top: 5px;
+    transition: width 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .col.rv  .bar-mini { background: var(--rv); }
+  .col.rfd .bar-mini { background: var(--rfd); }
+  .col.rfp .bar-mini { background: var(--rfp); }
+
+  .source-bar {
+    margin-top: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .source-bar p {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .source-bar .brand {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 640px) {
+    .columns { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="header">
+    <div class="label">Gráfico 3 · Rendimientos mensuales</div>
+    <h1>Mayo 2026 · <span>Renta variable y renta fija</span></h1>
+  </div>
+
+  <div class="legend">
+    <div class="leg-item"><span class="leg-dot rv"></span> Renta Variable (en u$s)</div>
+    <div class="leg-item"><span class="leg-dot rfd"></span> Renta Fija USD (en u$s)</div>
+    <div class="leg-item"><span class="leg-dot rfp"></span> Renta Fija ARS (en $)</div>
+  </div>
+
+  <div class="columns">
+
+    <!-- RENTA VARIABLE -->
+    <div class="col rv">
+      <div class="col-header">
+        Renta Variable
+        <span class="col-sub">Rendimiento en dólares · mayo</span>
+      </div>
+      <div class="item">
+        <span class="item-rank">1</span>
+        <div class="item-info">
+          <div class="item-name">BMA</div>
+          <div class="item-type">Banco Macro</div>
+          <div class="bar-mini" style="width:0%" data-w="100"></div>
+        </div>
+        <span class="item-val">+26%</span>
+      </div>
+      <div class="item">
+        <span class="item-rank">2</span>
+        <div class="item-info">
+          <div class="item-name">GGAL</div>
+          <div class="item-type">Grupo Galicia</div>
+          <div class="bar-mini" style="width:0%" data-w="77"></div>
+        </div>
+        <span class="item-val">+20%</span>
+      </div>
+      <div class="item">
+        <span class="item-rank">3</span>
+        <div class="item-info">
+          <div class="item-name">YPF</div>
+          <div class="item-type">Energía</div>
+          <div class="bar-mini" style="width:0%" data-w="77"></div>
+        </div>
+        <span class="item-val">+20%</span>
+      </div>
+      <div class="item">
+        <span class="item-rank">4</span>
+        <div class="item-info">
+          <div class="item-name">Merval</div>
+          <div class="item-type">Índice general</div>
+          <div class="bar-mini" style="width:0%" data-w="46"></div>
+        </div>
+        <span class="item-val">+12%</span>
+      </div>
+    </div>
+
+    <!-- RENTA FIJA USD -->
+    <div class="col rfd">
+      <div class="col-header">
+        Renta Fija USD
+        <span class="col-sub">Rendimiento en dólares · mayo</span>
+      </div>
+      <div class="item">
+        <span class="item-rank">1</span>
+        <div class="item-info">
+          <div class="item-name">BPOB8</div>
+          <div class="item-type">Bopreal Serie 4B</div>
+          <div class="bar-mini" style="width:0%" data-w="100"></div>
+        </div>
+        <span class="item-val">+5,2%</span>
+      </div>
+      <div class="item">
+        <span class="item-rank">2</span>
+        <div class="item-info">
+          <div class="item-name">GD41</div>
+          <div class="item-type">Global 2041 · ley NY</div>
+          <div class="bar-mini" style="width:0%" data-w="77"></div>
+        </div>
+        <span class="item-val">+4,0%</span>
+      </div>
+      <div class="item">
+        <span class="item-rank">3</span>
+        <div class="item-info">
+          <div class="item-name">GD35</div>
+          <div class="item-type">Global 2035 · ley NY</div>
+          <div class="bar-mini" style="width:0%" data-w="73"></div>
+        </div>
+        <span class="item-val">+3,9%</span>
+      </div>
+      <div class="item">
+        <span class="item-rank">4</span>
+        <div class="item-info">
+          <div class="item-name">GD46 / AL41</div>
+          <div class="item-type">Global 46 · Bonar 41</div>
+          <div class="bar-mini" style="width:0%" data-w="46"></div>
+        </div>
+        <span class="item-val">+2,4%</span>
+      </div>
+    </div>
+
+    <!-- RENTA FIJA ARS -->
+    <div class="col rfp">
+      <div class="col-header">
+        Renta Fija ARS
+        <span class="col-sub">Rendimiento en pesos · mayo</span>
+      </div>
+      <div class="item">
+        <span class="item-rank">1</span>
+        <div class="item-info">
+          <div class="item-name">TZXD7</div>
+          <div class="item-type">CER dic-2027</div>
+          <div class="bar-mini" style="width:0%" data-w="100"></div>
+        </div>
+        <span class="item-val">+4,2%</span>
+      </div>
+      <div class="item">
+        <span class="item-rank">2</span>
+        <div class="item-info">
+          <div class="item-name">TZXM9</div>
+          <div class="item-type">CER mar-2029</div>
+          <div class="bar-mini" style="width:0%" data-w="86"></div>
+        </div>
+        <span class="item-val">+3,6%</span>
+      </div>
+      <div class="item">
+        <span class="item-rank">3</span>
+        <div class="item-info">
+          <div class="item-name">TZXS8</div>
+          <div class="item-type">CER sep-2028</div>
+          <div class="bar-mini" style="width:0%" data-w="57"></div>
+        </div>
+        <span class="item-val">+2,4%</span>
+      </div>
+      <div class="item">
+        <span class="item-rank">4</span>
+        <div class="item-info">
+          <div class="item-name">S30N6</div>
+          <div class="item-type">Lecap nov-2026</div>
+          <div class="bar-mini" style="width:0%" data-w="43"></div>
+        </div>
+        <span class="item-val">+1,8%</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="source-bar">
+    <p>Fuentes: <strong>Cohen Aliados Financieros</strong> (González / Mejia, CFA) · <strong>Eric Ritondale, Puente</strong> · Infobae · Ámbito · 29/5/2026</p>
+    <span class="brand">Mayo 2026</span>
+  </div>
+</div>
+
+<script>
+  window.addEventListener('load', () => {
+    const bars = document.querySelectorAll('.bar-mini[data-w]');
+    setTimeout(() => {
+      bars.forEach((el, i) => {
+        setTimeout(() => {
+          el.style.width = el.dataset.w + '%';
+        }, i * 80);
+      });
+    }, 300);
+  });
+</script>
+</body>
+</html>
