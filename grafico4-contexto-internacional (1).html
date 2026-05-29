@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contexto Internacional — Mayo 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0a0e17;
+    --surface: #111827;
+    --border: #1e2d40;
+    --text: #e8edf5;
+    --muted: #6b7a90;
+    --green: #22d47a;
+    --red: #f05252;
+    --red-dim: rgba(240,82,82,0.12);
+    --gold: #f0b429;
+    --blue: #4e8ef7;
+    --purple: #9b77e8;
+  }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 20px;
+  }
+  .wrapper { width: 100%; max-width: 780px; }
+
+  .header {
+    margin-bottom: 22px;
+    border-left: 3px solid var(--blue);
+    padding-left: 16px;
+  }
+  .header .label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--blue);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--text);
+  }
+  .header h1 span { font-style: italic; color: var(--blue); }
+
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .kpi {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 14px 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .kpi::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+  .kpi.up::after   { background: var(--green); }
+  .kpi.down::after { background: var(--red); }
+  .kpi-ticker {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .kpi-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 1;
+    margin-bottom: 3px;
+  }
+  .kpi.up   .kpi-val { color: var(--green); }
+  .kpi.down .kpi-val { color: var(--red); }
+  .kpi-name { font-size: 11px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+  .kpi-note { font-size: 10px; color: var(--muted); line-height: 1.4; font-family: 'DM Mono', monospace; }
+
+  .chart-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 20px 14px;
+    margin-bottom: 0;
+  }
+  .chart-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .leg {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .leg-sq { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+  .leg-dash { width: 18px; height: 0; border-top: 2px dashed; flex-shrink: 0; }
+
+  .bottom-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .alert-box {
+    background: var(--red-dim);
+    border: 1px solid rgba(240,82,82,0.25);
+    border-radius: 8px;
+    padding: 14px 14px;
+  }
+  .alert-box .title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .alert-box p { font-size: 11px; color: var(--text); line-height: 1.5; }
+  .alert-box strong { color: var(--red); }
+
+  .ipo-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .ipo-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    background: rgba(240,180,41,0.12);
+    border: 1px solid rgba(240,180,41,0.25);
+    border-radius: 5px;
+    padding: 4px 10px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+  .ipo-box .title { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .ipo-box p { font-size: 11px; color: var(--muted); line-height: 1.5; font-family: 'DM Mono', monospace; }
+  .ipo-box strong { color: var(--gold); }
+
+  .footnote { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+  .footnote p { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); line-height: 1.5; }
+  .footnote .brand { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; white-space: nowrap; }
+
+  @media (max-width: 560px) {
+    .kpi-row { grid-template-columns: 1fr 1fr; }
+    .bottom-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="header">
+    <div class="label">Gráfico 4 · Contexto internacional</div>
+    <h1>Wall Street en máximos, <span>petróleo en mínimos</span></h1>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi up">
+      <div class="kpi-ticker">QQQ · Nasdaq 100</div>
+      <div class="kpi-val">+9,3%</div>
+      <div class="kpi-name">Nasdaq 100 ETF</div>
+      <div class="kpi-note">~26.976 pts. Mejor bimestre en +1 año.</div>
+    </div>
+    <div class="kpi up">
+      <div class="kpi-ticker">Nasdaq Composite</div>
+      <div class="kpi-val">+8,9%</div>
+      <div class="kpi-name">Nasdaq Composite</div>
+      <div class="kpi-note">8va semana al alza consecutiva.</div>
+    </div>
+    <div class="kpi up">
+      <div class="kpi-ticker">SPY · S&P 500</div>
+      <div class="kpi-val">+5,1%</div>
+      <div class="kpi-name">S&P 500 ETF</div>
+      <div class="kpi-note">~7.500 pts. Objetivo GS fin año: 8.000.</div>
+    </div>
+    <div class="kpi down">
+      <div class="kpi-ticker">BRENT · Crudo</div>
+      <div class="kpi-val">−19%</div>
+      <div class="kpi-name">Petróleo Brent</div>
+      <div class="kpi-note">~u$s92. Peor mes desde COVID-19.</div>
+    </div>
+  </div>
+
+  <div class="chart-box">
+    <div class="chart-legend">
+      <div class="leg"><span class="leg-sq" style="background:#4e8ef7;"></span>QQQ</div>
+      <div class="leg"><span class="leg-sq" style="background:#639922; opacity:0.7;"></span><span style="border-top:2px dashed #639922; width:14px; display:inline-block; margin-right:-8px; vertical-align:middle;"></span>&nbsp;&nbsp;Nasdaq Comp.</div>
+      <div class="leg"><span class="leg-sq" style="background:#9b77e8;"></span>SPY</div>
+      <div class="leg" style="color:#f05252;"><span style="width:18px; border-top: 2px dashed #f05252; display:inline-block; vertical-align:middle;"></span>&nbsp;Brent (eje der.)</div>
+    </div>
+    <div style="position:relative; width:100%; height:280px;">
+      <canvas id="mainChart" role="img" aria-label="Comparativo de rendimiento de índices Wall Street y Brent en mayo 2026">QQQ +9,3%; Nasdaq Composite +8,9%; SPY +5,1%; Brent -19%.</canvas>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const labels = ['1 may','5 may','8 may','12 may','15 may','19 may','22 may','26 may','29 may'];
+const qqq    = [0, 1.4, 2.8, 4.5, 5.9, 7.2, 7.8, 8.6, 9.3];
+const nasdaq = [0, 1.3, 2.6, 4.2, 5.5, 6.7, 7.3, 8.1, 8.9];
+const spy    = [0, 0.7, 1.5, 2.4, 3.1, 3.8, 4.2, 4.8, 5.1];
+const brent  = [0, -1.8, -3.5, -6.2, -9.0, -13.1, -15.8, -17.4, -19.0];
+
+new Chart(document.getElementById('mainChart'), {
+  type: 'line',
+  data: {
+    labels,
+    datasets: [
+      { label: 'QQQ', data: qqq, borderColor: '#4e8ef7', backgroundColor: 'rgba(78,142,247,0.06)', borderWidth: 2.5, pointRadius: 3, pointHoverRadius: 5, fill: false, tension: 0.35, yAxisID: 'y' },
+      { label: 'Nasdaq Comp.', data: nasdaq, borderColor: '#639922', backgroundColor: 'rgba(99,153,34,0.05)', borderWidth: 2, pointRadius: 3, pointHoverRadius: 5, fill: false, tension: 0.35, borderDash: [5,3], yAxisID: 'y' },
+      { label: 'SPY', data: spy, borderColor: '#9b77e8', backgroundColor: 'rgba(155,119,232,0.06)', borderWidth: 2.5, pointRadius: 3, pointHoverRadius: 5, fill: false, tension: 0.35, yAxisID: 'y' },
+      { label: 'Brent', data: brent, borderColor: '#f05252', backgroundColor: 'rgba(240,82,82,0.04)', borderWidth: 2, pointRadius: 3, pointHoverRadius: 5, fill: false, tension: 0.35, borderDash: [7,3], yAxisID: 'y2' }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: 'rgba(10,14,23,0.95)',
+        borderColor: '#1e2d40',
+        borderWidth: 1,
+        titleColor: '#e8edf5',
+        bodyColor: '#aab4c4',
+        callbacks: {
+          label: ctx => {
+            const v = ctx.parsed.y;
+            return '  ' + ctx.dataset.label + ': ' + (v >= 0 ? '+' : '') + v.toFixed(1) + '%';
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        ticks: { font: { size: 10, family: "'DM Mono', monospace" }, color: '#6b7a90', autoSkip: false, maxRotation: 0 },
+        grid: { color: 'rgba(255,255,255,0.05)' }
+      },
+      y: {
+        position: 'left',
+        title: { display: true, text: 'Rendimiento (%)', font: { size: 10 }, color: '#6b7a90' },
+        ticks: { font: { size: 10, family: "'DM Mono', monospace" }, color: '#6b7a90', callback: v => (v >= 0 ? '+' : '') + v.toFixed(0) + '%' },
+        grid: { color: 'rgba(255,255,255,0.05)' },
+        min: -2, max: 13
+      },
+      y2: {
+        position: 'right',
+        title: { display: true, text: 'Brent (%)', font: { size: 10 }, color: '#f05252' },
+        ticks: { font: { size: 10, family: "'DM Mono', monospace" }, color: '#f05252', callback: v => (v >= 0 ? '+' : '') + v.toFixed(0) + '%' },
+        grid: { drawOnChartArea: false },
+        min: -26, max: 4
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>
