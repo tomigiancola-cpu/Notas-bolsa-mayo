@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Variables Clave — Mayo 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0e17;
+    --surface: #111827;
+    --border: #1e2d40;
+    --text: #e8edf5;
+    --muted: #6b7a90;
+    --green: #22d47a;
+    --red: #f05252;
+    --gold: #f0b429;
+    --blue: #4e8ef7;
+    --accent: #22d47a;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 20px;
+  }
+
+  .wrapper {
+    width: 100%;
+    max-width: 860px;
+  }
+
+  .header {
+    margin-bottom: 28px;
+    border-left: 3px solid var(--green);
+    padding-left: 16px;
+  }
+
+  .header .label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    font-weight: 400;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  .header h1 span {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 18px 16px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+
+  .card.up::before { background: var(--green); }
+  .card.down::before { background: var(--red); }
+  .card.neutral::before { background: var(--gold); }
+  .card.info::before { background: var(--blue); }
+
+  .card-icon {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .card-value {
+    font-family: 'DM Mono', monospace;
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .card.up .card-value { color: var(--green); }
+  .card.down .card-value { color: var(--red); }
+  .card.neutral .card-value { color: var(--gold); }
+  .card.info .card-value { color: var(--blue); }
+
+  .card-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .card-sub {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  .card-arrow {
+    position: absolute;
+    top: 18px; right: 18px;
+    font-size: 18px;
+  }
+
+  .card.up .card-arrow { color: var(--green); }
+  .card.down .card-arrow { color: var(--red); }
+  .card.neutral .card-arrow { color: var(--gold); }
+  .card.info .card-arrow { color: var(--blue); }
+
+  .footnote {
+    margin-top: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footnote p {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  .footnote .brand {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 600px) {
+    .grid { grid-template-columns: 1fr 1fr; }
+    .card-value { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="header">
+    <div class="label">Gráfico 1 · Cierre mensual</div>
+    <h1>Variables clave — <span>Mayo 2026</span></h1>
+  </div>
+
+  <div class="grid">
+
+    <div class="card up">
+      <div class="card-arrow">↑</div>
+      <div class="card-icon">Merval</div>
+      <div class="card-value">+12%</div>
+      <div class="card-label">S&P Merval en dólares</div>
+      <div class="card-sub">+11% en pesos. Máximos del año. Revirtió caída de abril.</div>
+    </div>
+
+    <div class="card down">
+      <div class="card-arrow">↓</div>
+      <div class="card-icon">Riesgo País</div>
+      <div class="card-value">493 pb</div>
+      <div class="card-label">Cierre de mayo</div>
+      <div class="card-sub">Compresión de ~65 pb en el mes. Inicio: 558 pb.</div>
+    </div>
+
+    <div class="card neutral">
+      <div class="card-arrow">→</div>
+      <div class="card-icon">Dólar oficial</div>
+      <div class="card-value">+1,4%</div>
+      <div class="card-label">Variación mensual</div>
+      <div class="card-sub">Subió $20 en mayo. CCL se apreció 2,2% en el año.</div>
+    </div>
+
+    <div class="card up">
+      <div class="card-arrow">↓</div>
+      <div class="card-icon">Inflación estimada</div>
+      <div class="card-value">~2,2%</div>
+      <div class="card-label">IPC mayo (alta frecuencia)</div>
+      <div class="card-sub">Muy por debajo del 3,4% de marzo. Desaceleración.</div>
+    </div>
+
+    <div class="card info">
+      <div class="card-arrow">↑</div>
+      <div class="card-icon">BCRA compras netas</div>
+      <div class="card-value">u$s2.596M</div>
+      <div class="card-label">Acumulado mayo</div>
+      <div class="card-sub">Reservas brutas: u$s48.511 M. Saldo anual: u$s9.677 M.</div>
+    </div>
+
+    <div class="card up">
+      <div class="card-arrow">↑</div>
+      <div class="card-icon">EMAE marzo (INDEC)</div>
+      <div class="card-value">+5,5%</div>
+      <div class="card-label">Interanual · marzo 2026</div>
+      <div class="card-sub">+3,5% mensual desestac. 14 de 15 sectores en alza.</div>
+    </div>
+
+  </div>
+
+</div>
+</body>
+</html>
